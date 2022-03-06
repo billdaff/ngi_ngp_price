@@ -16,18 +16,18 @@ add_action('init', 'ngi_ngp_price_shortcodes_init');
  * @return string HTML span with the price change and pricing point
 */
 function ngi_ngp_price($atts = [], $content = NULL) {
-  if($content != NULL){
+  if($content != NULL) {
     $request = wp_remote_get('https://api.ngidata.com/dailyPriceTicker.json');
     if(!is_wp_error($request)) {
       $body = wp_remote_retrieve_body($request);
       $data = json_decode($body);
       if(!empty($data)) {
-        foreach($data->data as $company_info){
-          if(strtolower($company_info->{'Pricing Point'}) === trim(strtolower(strip_tags($content)))){
+        foreach($data->data as $company_info) {
+          if(strtolower($company_info->{'Pricing Point'}) === trim(strtolower(strip_tags($content)))) {
             $contentHtml = '<span>'.$content.'</span> ';
             $price_color = 'black';
             $price_sign = '';
-            if(floatval($company_info->Change) > 0){
+            if(floatval($company_info->Change) > 0) {
               $price_color = 'green';
               $price_sign = '+';
             }
